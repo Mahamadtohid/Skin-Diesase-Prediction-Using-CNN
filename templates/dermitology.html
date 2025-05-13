@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="title">Skin Disease Detector Using AI</h2>
+
+<div class="container">
+    <form id="upload-file" method="post" enctype="multipart/form-data">
+        <label for="imageUpload" class="upload-label">
+            <i class="fas fa-cloud-upload-alt"></i> Upload Image of Skin to Analyze
+        </label>
+        <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg">
+    </form>
+
+    <!-- Section for displaying image preview after upload -->
+    <div class="image-section" style="display:none;">
+        <div class="img-preview">
+            <div id="imagePreview" class="image-placeholder"></div>
+        </div>
+        <div class="btn-container">
+            <button type="button" class="btn btn-primary btn-lg animated-button" id="btn-predict">
+                <i class="fas fa-stethoscope"></i> Analyze with Medica
+            </button>
+        </div>
+    </div>
+
+    <!-- Loader to show during prediction -->
+    <div class="loader" style="display:none;"></div>
+
+    <!-- Display the prediction result -->
+    <h3 id="result" class="result">
+        <span>Prediction: {{ result }}</span>
+    </h3>
+</div>
+
+<!-- Section to display retrieved similar lesion images -->
+<div id="retrieved-images" class="retrieved-section">
+    <h4>Similar Lesion Images:</h4>
+    <div class="row">
+        {% if images %}
+            {% for image in images %}
+                <div class="col-md-4 image-card">
+                    <img src="{{ url_for('send_image', filename=image) }}" class="img-fluid lesion-image" alt="Lesion Image">
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-images">No images found for this lesion.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
